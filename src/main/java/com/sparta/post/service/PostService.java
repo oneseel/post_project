@@ -28,7 +28,6 @@ public class PostService {
 
         // Entity -> ResponseDto
         PostResponseDto postResponseDto = new PostResponseDto(post);
-
         return postResponseDto;
     }
 
@@ -45,35 +44,41 @@ public class PostService {
     // 글 목록 조회하기
     public List<PostResponseDto> getPosts() {
         // DB 조회
-        return postRepository.findAllByOrderByModifiedAtDesc().
+        return postRepository.findAllByOrderByCreatedAtDesc().
                 stream().map(PostResponseDto::new).toList();
 
     }
 
     // 글 수정하기
     @Transactional
-    public Long updatePost(Long id, PostRequestDto requestDto) {
+    public Long updatePost(Long id, PostRequestDto requestDto, int pw) {
         // 해당 글이 DB에 존재하는지 확인
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 글이 존재하지 않습니다.")
         );
 
         // post 내용 수정
-        post.update(requestDto);
-
-        return id;
+        if (post.getPw() == pw) {
+            post.update(requestDto); // 비밀번호가 맞으면 수정
+            return id;
+        } else {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 
     // 글 삭제하기
-    public Long deletePost(Long id) {
+    public Long deletePost(Long id, int pw) {
         // 해당 글이 DB에 존재하는지 확인
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 글이 존재하지 않습니다.")
         );
 
         // post 내용 삭제
-        postRepository.delete(post);
-
-        return id;
+        if (post.getPw() == pw) {
+            postRepository.delete(post); // 비밀번호가 맞으면 삭제
+            return id;
+        } else {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }

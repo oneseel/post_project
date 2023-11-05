@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
@@ -37,13 +37,13 @@ public class PostController {
 
     // 글 수정
     @PutMapping ("/post/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
-        return postService.updatePost(id, requestDto);
+    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, @RequestParam("pw") int pw) {
+        return postService.updatePost(id, requestDto, pw);
     }
 
     // 글 삭제
     @DeleteMapping("/post/{id}")
-    public Long deletePost(@PathVariable Long id) {
-        return postService.deletePost(id);
+    public Long deletePost(@PathVariable Long id, @RequestParam("pw") int pw) {
+        return postService.deletePost(id, pw);
     }
 }
