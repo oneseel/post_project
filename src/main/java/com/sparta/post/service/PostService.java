@@ -51,14 +51,14 @@ public class PostService {
 
     // 글 수정하기
     @Transactional
-    public Long updatePost(Long id, PostRequestDto requestDto, String pw) {
+    public Long updatePost(Long id, PostRequestDto requestDto) {
         // 해당 글이 DB에 존재하는지 확인
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 글이 존재하지 않습니다.")
         );
 
         // post 내용 수정
-        if (post.getPw().equals(pw)) {
+        if (post.getPw().equals(requestDto.getPw())) {
             post.update(requestDto); // 비밀번호가 맞으면 수정
             return id;
         } else {
@@ -67,14 +67,14 @@ public class PostService {
     }
 
     // 글 삭제하기
-    public Long deletePost(Long id, String pw) {
+    public Long deletePost(Long id, PostRequestDto requestDto) {
         // 해당 글이 DB에 존재하는지 확인
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 글이 존재하지 않습니다.")
         );
 
         // post 내용 삭제
-        if (post.getPw().equals(pw)) {
+        if (post.getPw().equals(requestDto.getPw())) {
             postRepository.delete(post); // 비밀번호가 맞으면 삭제
             return id;
         } else {

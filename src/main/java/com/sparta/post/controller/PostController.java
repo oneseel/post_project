@@ -37,13 +37,13 @@ public class PostController {
 
     // 글 수정
     @PutMapping ("/post/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, @RequestParam("pw") String pw) {
-        return postService.updatePost(id, requestDto, pw);
+    public Long updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+        return postService.updatePost(id, requestDto);
     }
 
     // 글 삭제
     @DeleteMapping("/post/{id}")
-    public Long deletePost(@PathVariable Long id, @RequestParam("pw") String pw) {
-        return postService.deletePost(id, pw);
+    public Long deletePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto) {
+        return postService.deletePost(id, requestDto);
     }
 }
