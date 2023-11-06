@@ -24,7 +24,7 @@ public class Post extends Timestamped{
     String username;
 
     @Column(name = "pw", nullable = false, length = 100)
-    int pw;
+    String pw;
 
     @Column(name = "contents", nullable = false, length = 1000)
     String contents;
